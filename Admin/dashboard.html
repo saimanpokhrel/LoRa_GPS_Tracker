@@ -7,77 +7,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
 
-
-
-
     <!-- CDN AND CSS LINK  -->
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
     <!-- CDN AND CSS LINK END -->
-
-    <!-- LINK SECTION  ENDS -->
 </head>
 
-<body>
-    <!-- Include navigation and sidebar -->
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  dark:border-gray-700">
+<body class="bg-gray-100">
+    <!-- Navigation bar -->
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-md">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
-                <div class="flex items-center justify-start">
-                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
-                        aria-controls="logo-sidebar" type="button"
-                        class="inline-flex items-center p-2 text-sm text-gray-600 rounded-lg sm:hidden hover:bg-black focus:outline-none focus:ring-2 focus:ring-white   ">
+                <div class="flex items-center">
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-600 rounded-lg sm:hidden hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200">
                         <span class="sr-only">Open sidebar</span>
-                        <i class="material-icons  ">menu</i>
+                        <i class="material-icons">menu</i>
                     </button>
                     <a href="utsabwagle.com.np" target="_blank" class="flex ml-2 md:mr-24">
-                        <img src="#" class="h-8 mr-3" alt=" lora gps" />
+                        <img src="#" class="h-8 mr-3" alt="Logo" />
                     </a>
                 </div>
                 <div class="flex items-center">
-                    <div class="flex items-center ml-3">
-                        <div>
-                            <button type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-black"
-                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                                <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full" src="../assets/image/utsav.jpeg" alt="user photo">
-                            </button>
-                        </div>
-                        <div class="z-50 hidden my-4 text-base list-none  divide-y divide-gray-100 rounded shadow bg-black "
-                            id="dropdown-user">
-                            <div class="px-4 py-3" role="none">
-                                <p class="text-sm text-white " role="none">
-                                    name
-                                </p>
-                                <p class="text-sm font-medium text-white truncate " role="none">
-                                    email </p>
-                                <p class="text-sm font-medium text-white truncate " role="none">
-                                    <span>admin ID:</span>
-                                    8127
-                                </p>
+                    <div class="relative">
+                        <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-black" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 rounded-full" src="../assets/image/utsav.jpeg" alt="user photo">
+                        </button>
+                        <div class="z-50 hidden my-4 text-base list-none divide-y divide-gray-100 rounded shadow bg-white" id="dropdown-user">
+                            <div class="px-4 py-3">
+                                <p class="text-sm text-gray-900">Name</p>
+                                <p class="text-sm font-medium text-gray-900 truncate">Email</p>
+                                <p class="text-sm font-medium text-gray-900 truncate">Admin ID: 8127</p>
                             </div>
-                            <ul class="py-1" role="none">
-
+                            <ul class="py-1">
                                 <li>
-                                    <a href="./dashboard.html"
-                                        class="block px-4 py-2 text-sm text-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Full Acess
-
-                                    </a>
+                                    <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Full Access</a>
                                 </li>
                                 <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Admin Profile</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin Profile</a>
                                 </li>
-
                                 <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Log out</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log out</a>
                                 </li>
                             </ul>
                         </div>
@@ -87,71 +59,49 @@
         </div>
     </nav>
 
-    <!-- navabr end here  -->
-    <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-black  sm:translate-x-0 "
-        aria-label="Sidebar">
-
+    <!-- Sidebar -->
+    <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-black sm:translate-x-0">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-black">
             <ul class="space-y-2 font-medium">
-                <li class="pb-2">
-                    <a href="dashboard.html"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i
-                            class="material-icons w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">dashboard</i>
+                <li>
+                    <a href="dashboard.html" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
+                        <i class="material-icons">dashboard</i>
                         <span class="ml-3">Admin Dashboard</span>
                     </a>
                 </li>
-                <li class="pb-2">
-                    <a href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i
-                            class="material-icons w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">dashboard</i>
-                        <span class="flex-1 ml-3 whitespace-nowrap">case 1</span>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
+                        <i class="material-icons">dashboard</i>
+                        <span class="flex-1 ml-3 whitespace-nowrap">Case 1</span>
                     </a>
                 </li>
-
-                <li class="pb-2">
-                    <a href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i
-                            class="material-icons w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">list_alt</i>
-                        <span class="flex-1 ml-3 whitespace-nowrap"> case 2</span>
-                    </a>
-
-                </li>
-
-                <li class="pb-2">
-                    <a href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i
-                            class="material-icons w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">sports_gymnastics</i>
-                        <span class="flex-1 ml-3 whitespace-nowrap">case 3</span>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
+                        <i class="material-icons">list_alt</i>
+                        <span class="flex-1 ml-3 whitespace-nowrap">Case 2</span>
                     </a>
                 </li>
-
-                <li class="pb-2">
-                    <a href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i
-                            class="material-icons w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">edit</i>
-                        <span class="flex-1 ml-3 whitespace-nowrap"> Update Profile</span>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
+                        <i class="material-icons">sports_gymnastics</i>
+                        <span class="flex-1 ml-3 whitespace-nowrap">Case 3</span>
                     </a>
                 </li>
-                <li class="pb-2">
-                    <a href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i
-                            class="material-icons w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">vpn_key</i>
-                        <span class="flex-1 ml-3 whitespace-nowrap"> Change Password</span>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
+                        <i class="material-icons">edit</i>
+                        <span class="flex-1 ml-3 whitespace-nowrap">Update Profile</span>
                     </a>
                 </li>
-
-                <li class="pb-2">
-                    <a href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i
-                            class="material-icons w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">account_circle</i>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
+                        <i class="material-icons">vpn_key</i>
+                        <span class="flex-1 ml-3 whitespace-nowrap">Change Password</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
+                        <i class="material-icons">account_circle</i>
                         <span class="flex-1 ml-3 whitespace-nowrap">My Profile</span>
                     </a>
                 </li>
@@ -159,18 +109,17 @@
         </div>
     </aside>
 
-    <div class="bg-gray-200 p-4 ml-4 md:ml-64 mt-4 md:mt-8">
-        <div class="flex flex-col lg:flex-row justify-between items-center mb-4">
-            <div class="w-full md:w-1/2 p-2 md:p-4 lg:p-6">
-                <!-- Include map Chart -->
-                <p class="text-center mt-2 text-black">Map integration</p>
+    <!-- Main content -->
+    <div class="ml-64 p-6">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex flex-col lg:flex-row justify-between items-center mb-4">
+                <div class="w-full md:w-1/2 p-2 md:p-4 lg:p-6">
+                    <p class="text-center mt-2 text-black">Map integration</p>
+                    <!-- Include your map or chart integration here -->
+                </div>
             </div>
-
         </div>
     </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
 </body>
 
 </html>
