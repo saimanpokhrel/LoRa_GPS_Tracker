@@ -1,28 +1,116 @@
-{% extends "base.html" %}
-
-{% block content %}
-<h1 class="mt-4">LoRa GPS Tracking Dashboard</h1>
-<div class="row">
-    <div class="col-md-8">
-        <iframe id="mapFrame" src="{{ url_for('static', filename='map.html') }}" width="100%" height="500px"></iframe>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">Latest Coordinates</div>
-            <div class="card-body">
-                <p id="coords">Latitude: {{ coords.lat }}, Longitude: {{ coords.lon }}</p>
-                <button class="btn btn-primary" onclick="updateMap()">Update Map</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoRa GPS Tracker Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">LoRa GPS Tracker Dashboard</h1>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h3>Device Settings</h3>
+                <form id="device-settings">
+                    <div class="form-group">
+                        <label for="port-select">Select Port</label>
+                        <select id="port-select" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="baudrate-select">Select Baud Rate</label>
+                        <select id="baudrate-select" class="form-control">
+                            <option value="9600">9600</option>
+                            <option value="19200">19200</option>
+                            <option value="38400">38400</option>
+                            <option value="57600">57600</option>
+                            <option value="115200">115200</option>
+                        </select>
+                    </div>
+                    <button type="button" id="connect-button" class="btn btn-primary">Connect</button>
+                    <button type="button" id="disconnect-button" class="btn btn-danger">Disconnect</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Latest Coordinates</h3>
+                <p>Latitude: <span id="lat">{{ coords.lat }}</span></p>
+                <p>Longitude: <span id="lon">{{ coords.lon }}</span></p>
+                <div id="map" style="height: 400px;"></div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    function updateMap() {
-        document.getElementById('mapFrame').src = "{{ url_for('static', filename='map.html') }}?t=" + new Date().getTime();
-        $.get('/coords', function(data) {
-            $('#coords').text('Latitude: ' + data.lat + ', Longitude: ' + data.lon);
+
+    <script>
+        // Fetch available ports and populate the dropdown
+        function fetchPorts() {
+            $.getJSON('/ports', function(data) {
+                var portSelect = $('#port-select');
+                portSelect.empty();
+                data.forEach(function(port) {
+                    portSelect.append(new Option(port, port));
+                });
+            });
+        }
+
+        // Update coordinates on the page
+        function updateCoords() {
+            $.getJSON('/coords', function(data) {
+                $('#lat').text(data.lat);
+                $('#lon').text(data.lon);
+            });
+        }
+
+        $(document).ready(function() {
+            fetchPorts();
+            setInterval(updateCoords, 1000);
+
+            $('#connect-button').click(function() {
+                var selectedPort = $('#port-select').val();
+                var selectedBaudrate = $('#baudrate-select').val();
+                $.ajax({
+                    url: '/set_port',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ port: selectedPort }),
+                    success: function(response) {
+                        if (response.success) {
+                            $.ajax({
+                                url: '/set_baudrate',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ baudrate: selectedBaudrate }),
+                                success: function(response) {
+                                    if (response.success) {
+                                        $.post('/connect', function(response) {
+                                            if (response.success) {
+                                                alert('Connected successfully!');
+                                            } else {
+                                                alert('Connection failed: ' + response.error);
+                                            }
+                                        });
+                                    } else {
+                                        alert('Failed to set baud rate');
+                                    }
+                                }
+                            });
+                        } else {
+                            alert('Failed to set port');
+                        }
+                    }
+                });
+            });
+
+            $('#disconnect-button').click(function() {
+                $.post('/disconnect', function(response) {
+                    if (response.success) {
+                        alert('Disconnected successfully!');
+                    } else {
+                        alert('Disconnection failed: ' + response.error);
+                    }
+                });
+            });
         });
-    }
-    setInterval(updateMap, 1000);
-</script>
-{% endblock %}
+    </script>
+</body>
+</html>
