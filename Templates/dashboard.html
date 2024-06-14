@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mt-4">LoRa GPS Tracking Dashboard</h1>
+<div class="row">
+    <div class="col-md-8">
+        <iframe id="mapFrame" src="{{ url_for('static', filename='map.html') }}" width="100%" height="500px"></iframe>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Latest Coordinates</div>
+            <div class="card-body">
+                <p id="coords">Latitude: {{ coords.lat }}, Longitude: {{ coords.lon }}</p>
+                <button class="btn btn-primary" onclick="updateMap()">Update Map</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function updateMap() {
+        document.getElementById('mapFrame').src = "{{ url_for('static', filename='map.html') }}?t=" + new Date().getTime();
+        $.get('/coords', function(data) {
+            $('#coords').text('Latitude: ' + data.lat + ', Longitude: ' + data.lon);
+        });
+    }
+    setInterval(updateMap, 1000);
+</script>
+{% endblock %}
