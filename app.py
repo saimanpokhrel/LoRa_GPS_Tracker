@@ -7,7 +7,7 @@ import serial.tools.list_ports
 
 app = Flask(__name__)
 
-latest_coords = {"lat": 0, "lon": 0}
+latest_coords = {"lat": 27.669826, "lon":  85.333816}
 serial_port = None
 selected_port = None
 selected_baudrate = 9600

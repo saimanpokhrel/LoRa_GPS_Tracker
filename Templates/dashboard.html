@@ -107,7 +107,7 @@
             fetchPorts(); // Fetch ports when document is ready
             updateCoords(); // Initial update of coordinates and map
 
-            setInterval(updateCoords, 5000); // Update coordinates and map every 5 seconds
+            setInterval(updateCoords, 10000); // Update coordinates and map every 10 seconds
 
             $('#connect-button').click(function () {
                 var selectedPort = $('#port-select').val();
