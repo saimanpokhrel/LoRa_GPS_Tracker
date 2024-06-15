@@ -5,6 +5,9 @@
 
 static const int RXPin = 26, TXPin = 27;
 static const uint32_t GPSBaud = 9600;
+#define LORA_SS 5
+#define LORA_RST 14
+#define LORA_DI0 2 
 
 
 TinyGPSPlus gps;
@@ -12,6 +15,7 @@ SoftwareSerial ss(RXPin, TXPin);
 
 void setup() {
   Serial.begin(9600);
+  LoRa.setPins(LORA_SS, LORA_RST, LORA_DI0);
   ss.begin(GPSBaud);
   LoRa.begin(433E6);
   LoRa.setTxPower(18);
@@ -21,9 +25,8 @@ void loop() {
   smartDelay(5000);
 
   if (gps.location.isValid()) {
-    Serial.print("Latitude: ");
     Serial.print(gps.location.lat(), 6);
-    Serial.print(", Longitude: ");
+    Serial.print(",");
     Serial.println(gps.location.lng(), 6);
 
     LoRa.beginPacket();
