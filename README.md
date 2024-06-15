@@ -7,7 +7,7 @@ Welcome to the United Tech Club's LoRa GPS Tracker project repository! This proj
 
 The LoRa GPS Tracker is designed for various applications, including wildlife monitoring, disaster rescue, security, asset management, and transport logistics. Leveraging the 433MHz frequency, this device aims to overcome limitations associated with traditional cellular and satellite tracking technologies.
 
-<img src="Sample_LOGO/Tracker_Logo_1.png" alt="Product Logo" width="600" height="600">
+<img src="Sample_LOGO/Tracker_Logo_1.png" alt="Product Logo" width="400" height="300">
 
 ## Key Features
 
