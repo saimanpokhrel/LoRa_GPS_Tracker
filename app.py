@@ -22,6 +22,7 @@ def update_coords():
                 if latitude is not None and longitude is not None:
                     latest_coords['lat'] = latitude
                     latest_coords['lon'] = longitude
+                    print(f"Updating coordinates to: {latest_coords}")
                     create_map(latitude, longitude)
 
 @app.route('/')
