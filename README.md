@@ -62,7 +62,7 @@ The LORA GPS Tracker is designed for efficient and reliable tracking across vari
 
 ## Support
 
-For further assistance, visit our [Support Page](https://www.loragpstracker.com/support) or contact our customer service at support@loragpstracker.com.
+For further assistance, visit our [Support Page] or contact our customer service at support@loragpstracker.com.
 
 ## Conclusion
 
