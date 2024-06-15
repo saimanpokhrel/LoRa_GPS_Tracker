@@ -2,11 +2,12 @@ from flask import Flask, render_template, jsonify, request
 from gps_reader import read_gps_data, parse_gps_data
 from map_creator import create_map
 import threading
+import serial
 import serial.tools.list_ports
 
 app = Flask(__name__)
 
-latest_coords = {'lat': 0.0, 'lon': 0.0}
+latest_coords = {'lat': 25.2424, 'lon': 87.23244}
 serial_port = None
 selected_port = None
 selected_baudrate = 9600
@@ -14,7 +15,7 @@ selected_baudrate = 9600
 def update_coords():
     global latest_coords, serial_port
     while True:
-        if serial_port:
+        if serial_port and serial_port.is_open:
             gps_data = read_gps_data(serial_port, selected_baudrate)
             if gps_data:
                 latitude, longitude = parse_gps_data(gps_data)
