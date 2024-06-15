@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LoRa GPS Tracker Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #map {
+            height: 300px; /* Adjust height as needed */
+            width: 50%; /* Ensure map takes full width */
+        }
+
+        .coordinates {
+            margin-bottom: 20px;
+        }
+
+        .map-container {
+            border: 1px solid #ccc; /* Add a border around the map container */
+            border-radius: 5px;
+            overflow: hidden; /* Hide overflow to prevent map from escaping border */
+        }
+    </style>
 </head>
+
 <body>
     <div class="container mt-5">
         <h1 class="text-center">LoRa GPS Tracker Dashboard</h1>
@@ -33,39 +50,75 @@
                 </form>
             </div>
             <div class="col-md-6">
-                <h3>Latest Coordinates</h3>
-                <p>Latitude: <span id="lat">{{ coords.lat }}</span></p>
-                <p>Longitude: <span id="lon">{{ coords.lon }}</span></p>
-                <div id="map" style="height: 400px;"></div>
+                <div class="coordinates">
+                    <h3>Latest Coordinates</h3>
+                    <p>Latitude: <span id="lat"></span></p>
+                    <p>Longitude: <span id="lon"></span></p>
+                </div>
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
             </div>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script>
+        var map = null; // Global variable to hold the map instance
+
+        // Function to initialize the map using Leaflet
+        function initMap(lat, lon) {
+            if (map === null) {
+                map = L.map('map').setView([lat, lon], 13);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
+
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup('Device Location')
+                    .openPopup();
+            } else {
+                map.setView([lat, lon], 13);
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup('Device Location')
+                    .openPopup();
+            }
+        }
+
         // Fetch available ports and populate the dropdown
         function fetchPorts() {
-            $.getJSON('/ports', function(data) {
+            $.getJSON('/ports', function (data) {
                 var portSelect = $('#port-select');
-                portSelect.empty();
-                data.forEach(function(port) {
-                    portSelect.append(new Option(port, port));
+                portSelect.empty(); // Clear previous options
+                data.forEach(function (port) {
+                    portSelect.append(new Option(port, port)); // Append each port as an option
                 });
+            }).fail(function () {
+                alert('Failed to fetch ports. Please check your server or endpoint.');
             });
         }
 
-        // Update coordinates on the page
+        // Update coordinates on the page and update map
         function updateCoords() {
-            $.getJSON('/coords', function(data) {
+            $.getJSON('/coords', function (data) {
                 $('#lat').text(data.lat);
                 $('#lon').text(data.lon);
+
+                // Update map with new coordinates
+                initMap(data.lat, data.lon);
             });
         }
 
-        $(document).ready(function() {
-            fetchPorts();
-            setInterval(updateCoords, 1000);
+        $(document).ready(function () {
+            fetchPorts(); // Fetch ports when document is ready
+            updateCoords(); // Initial update of coordinates and map
 
-            $('#connect-button').click(function() {
+            setInterval(updateCoords, 5000); // Update coordinates and map every 5 seconds
+
+            $('#connect-button').click(function () {
                 var selectedPort = $('#port-select').val();
                 var selectedBaudrate = $('#baudrate-select').val();
                 $.ajax({
@@ -73,16 +126,16 @@
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ port: selectedPort }),
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             $.ajax({
                                 url: '/set_baudrate',
                                 type: 'POST',
                                 contentType: 'application/json',
                                 data: JSON.stringify({ baudrate: selectedBaudrate }),
-                                success: function(response) {
+                                success: function (response) {
                                     if (response.success) {
-                                        $.post('/connect', function(response) {
+                                        $.post('/connect', function (response) {
                                             if (response.success) {
                                                 alert('Connected successfully!');
                                             } else {
@@ -101,8 +154,8 @@
                 });
             });
 
-            $('#disconnect-button').click(function() {
-                $.post('/disconnect', function(response) {
+            $('#disconnect-button').click(function () {
+                $.post('/disconnect', function (response) {
                     if (response.success) {
                         alert('Disconnected successfully!');
                     } else {
@@ -112,5 +165,7 @@
             });
         });
     </script>
+
 </body>
+
 </html>
