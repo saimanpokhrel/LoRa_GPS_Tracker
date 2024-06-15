@@ -7,19 +7,27 @@
     <title>LoRa GPS Tracker Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        #map {
-            height: 300px; /* Adjust height as needed */
-            width: 50%; /* Ensure map takes full width */
+        .left-section {
+            width: 30%;
+            float: left;
+            padding-right: 15px;
         }
 
-        .coordinates {
-            margin-bottom: 20px;
+        .right-section {
+            width: 70%;
+            float: right;
         }
 
         .map-container {
-            border: 1px solid #ccc; /* Add a border around the map container */
+            border: 1px solid #ccc;
             border-radius: 5px;
-            overflow: hidden; /* Hide overflow to prevent map from escaping border */
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100%;
+            height: 500px; /* Adjust height as needed */
+            border: 0;
         }
     </style>
 </head>
@@ -27,8 +35,8 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">LoRa GPS Tracker Dashboard</h1>
-        <div class="row mt-4">
-            <div class="col-md-6">
+        <div class="row">
+            <div class="left-section">
                 <h3>Device Settings</h3>
                 <form id="device-settings">
                     <div class="form-group">
@@ -48,46 +56,24 @@
                     <button type="button" id="connect-button" class="btn btn-primary">Connect</button>
                     <button type="button" id="disconnect-button" class="btn btn-danger">Disconnect</button>
                 </form>
-            </div>
-            <div class="col-md-6">
-                <div class="coordinates">
+                <div class="coordinates mt-3">
                     <h3>Latest Coordinates</h3>
                     <p>Latitude: <span id="lat"></span></p>
                     <p>Longitude: <span id="lon"></span></p>
                 </div>
+            </div>
+            <div class="right-section">
                 <div class="map-container">
-                    <div id="map"></div>
+                    <iframe id="map-iframe" src="{{ url_for('static', filename='map.html') }}"></iframe>
                 </div>
+                <button class="btn btn-info mt-3" onclick="updateMap()">Update Map</button>
             </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script>
-        var map = null; // Global variable to hold the map instance
-
-        // Function to initialize the map using Leaflet
-        function initMap(lat, lon) {
-            if (map === null) {
-                map = L.map('map').setView([lat, lon], 13);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                }).addTo(map);
-
-                L.marker([lat, lon]).addTo(map)
-                    .bindPopup('Device Location')
-                    .openPopup();
-            } else {
-                map.setView([lat, lon], 13);
-                L.marker([lat, lon]).addTo(map)
-                    .bindPopup('Device Location')
-                    .openPopup();
-            }
-        }
-
         // Fetch available ports and populate the dropdown
         function fetchPorts() {
             $.getJSON('/ports', function (data) {
@@ -101,15 +87,20 @@
             });
         }
 
-        // Update coordinates on the page and update map
+        // Update coordinates on the page
         function updateCoords() {
             $.getJSON('/coords', function (data) {
                 $('#lat').text(data.lat);
                 $('#lon').text(data.lon);
 
-                // Update map with new coordinates
-                initMap(data.lat, data.lon);
+                // Update the map iframe with new coordinates
+                var iframe = document.getElementById('map-iframe');
+                iframe.src = iframe.src; // Reload the iframe source
             });
+        }
+
+        function updateMap() {
+            updateCoords();
         }
 
         $(document).ready(function () {
